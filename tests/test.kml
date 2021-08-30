@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>KML Export 8/30/2021 5:13:22 PM</name>
+    <Style id="style_emergency">
+      <IconStyle>
+        <colorMode>normal</colorMode>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/caution.png</href>
+        </Icon>
+      </IconStyle>
+      <BalloonStyle>
+        <text>&lt;table&gt;&lt;tr&gt;&lt;td&gt;Id&lt;/td&gt;&lt;td&gt; $[Id] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Time&lt;/td&gt;&lt;td&gt; $[Time] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Time UTC&lt;/td&gt;&lt;td&gt; $[Time UTC] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Name&lt;/td&gt;&lt;td&gt; $[Name] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Map Display Name&lt;/td&gt;&lt;td&gt; $[Map Display Name] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Device Type&lt;/td&gt;&lt;td&gt; $[Device Type] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;IMEI&lt;/td&gt;&lt;td&gt; $[IMEI] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Incident Id&lt;/td&gt;&lt;td&gt; $[Incident Id] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Latitude&lt;/td&gt;&lt;td&gt; $[Latitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Longitude&lt;/td&gt;&lt;td&gt; $[Longitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Elevation&lt;/td&gt;&lt;td&gt; $[Elevation] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Velocity&lt;/td&gt;&lt;td&gt; $[Velocity] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Course&lt;/td&gt;&lt;td&gt; $[Course] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Valid GPS Fix&lt;/td&gt;&lt;td&gt; $[Valid GPS Fix] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;In Emergency&lt;/td&gt;&lt;td&gt; $[In Emergency] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Text&lt;/td&gt;&lt;td&gt; $[Text] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Event&lt;/td&gt;&lt;td&gt; $[Event] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Device Identifier&lt;/td&gt;&lt;td&gt; $[Device Identifier] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SpatialRefSystem&lt;/td&gt;&lt;td&gt; $[SpatialRefSystem] &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</text>
+      </BalloonStyle>
+    </Style>
+    <Style id="style_1658884">
+      <IconStyle>
+        <color>ffff5500</color>
+        <colorMode>normal</colorMode>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+      <BalloonStyle>
+        <text>&lt;table&gt;&lt;tr&gt;&lt;td&gt;Id&lt;/td&gt;&lt;td&gt; $[Id] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Time&lt;/td&gt;&lt;td&gt; $[Time] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Time UTC&lt;/td&gt;&lt;td&gt; $[Time UTC] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Name&lt;/td&gt;&lt;td&gt; $[Name] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Map Display Name&lt;/td&gt;&lt;td&gt; $[Map Display Name] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Device Type&lt;/td&gt;&lt;td&gt; $[Device Type] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;IMEI&lt;/td&gt;&lt;td&gt; $[IMEI] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Incident Id&lt;/td&gt;&lt;td&gt; $[Incident Id] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Latitude&lt;/td&gt;&lt;td&gt; $[Latitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Longitude&lt;/td&gt;&lt;td&gt; $[Longitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Elevation&lt;/td&gt;&lt;td&gt; $[Elevation] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Velocity&lt;/td&gt;&lt;td&gt; $[Velocity] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Course&lt;/td&gt;&lt;td&gt; $[Course] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Valid GPS Fix&lt;/td&gt;&lt;td&gt; $[Valid GPS Fix] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;In Emergency&lt;/td&gt;&lt;td&gt; $[In Emergency] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Text&lt;/td&gt;&lt;td&gt; $[Text] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Event&lt;/td&gt;&lt;td&gt; $[Event] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Device Identifier&lt;/td&gt;&lt;td&gt; $[Device Identifier] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SpatialRefSystem&lt;/td&gt;&lt;td&gt; $[SpatialRefSystem] &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</text>
+      </BalloonStyle>
+    </Style>
+    <Style id="waypointstyle_1658884">
+      <IconStyle>
+        <color>ffff5500</color>
+        <colorMode>normal</colorMode>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+      <BalloonStyle>
+        <text>&lt;table&gt;&lt;tr&gt;&lt;td&gt;Time&lt;/td&gt;&lt;td&gt; $[Time] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Time UTC&lt;/td&gt;&lt;td&gt; $[Time UTC] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Latitude&lt;/td&gt;&lt;td&gt; $[Latitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Longitude&lt;/td&gt;&lt;td&gt; $[Longitude] &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Text&lt;/td&gt;&lt;td&gt; $[Text] &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</text>
+      </BalloonStyle>
+    </Style>
+    <Style id="linestyle_1658884">
+      <LineStyle>
+        <color>ffff5500</color>
+        <colorMode>normal</colorMode>
+        <width>1</width>
+        <labelVisibility xmlns="http://www.google.com/kml/ext/2.2">false</labelVisibility>
+      </LineStyle>
+    </Style>
+    <Folder>
+      <name>Greg Albrecht</name>
+      <Placemark>
+        <name>Greg Albrecht</name>
+        <visibility>true</visibility>
+        <description />
+        <TimeStamp>
+          <when>2021-07-22T15:22:30Z</when>
+        </TimeStamp>
+        <styleUrl>#style_1658884</styleUrl>
+        <ExtendedData>
+          <Data name="Id">
+            <value>207049997</value>
+          </Data>
+          <Data name="Time UTC">
+            <value>7/22/2021 3:22:30 PM</value>
+          </Data>
+          <Data name="Time">
+            <value>7/22/2021 8:22:30 AM</value>
+          </Data>
+          <Data name="Name">
+            <value>Greg Albrecht</value>
+          </Data>
+          <Data name="Map Display Name">
+            <value>Greg Albrecht</value>
+          </Data>
+          <Data name="Device Type">
+            <value>inReach Mini</value>
+          </Data>
+          <Data name="IMEI">
+            <value>300434033719020</value>
+          </Data>
+          <Data name="Incident Id">
+            <value />
+          </Data>
+          <Data name="Latitude">
+            <value>33.874926</value>
+          </Data>
+          <Data name="Longitude">
+            <value>-118.346915</value>
+          </Data>
+          <Data name="Elevation">
+            <value>22.63 m from MSL</value>
+          </Data>
+          <Data name="Velocity">
+            <value>0.0 km/h</value>
+          </Data>
+          <Data name="Course">
+            <value>0.00 ° True</value>
+          </Data>
+          <Data name="Valid GPS Fix">
+            <value>True</value>
+          </Data>
+          <Data name="In Emergency">
+            <value>False</value>
+          </Data>
+          <Data name="Text">
+            <value />
+          </Data>
+          <Data name="Event">
+            <value>Tracking interval received.</value>
+          </Data>
+          <Data name="Device Identifier">
+            <value />
+          </Data>
+          <Data name="SpatialRefSystem">
+            <value>WGS84</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <extrude>false</extrude>
+          <altitudeMode>absolute</altitudeMode>
+          <coordinates>-118.346915,33.874926,22.63</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Greg Albrecht</name>
+        <visibility>true</visibility>
+        <description>Greg Albrecht's track log</description>
+        <styleUrl>#linestyle_1658884</styleUrl>
+        <LineString>
+          <tessellate>true</tessellate>
+          <coordinates>-118.346915,33.874926,22.63</coordinates>
+        </LineString>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

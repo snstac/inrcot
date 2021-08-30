@@ -1,0 +1,6 @@
+# Python Distribution Package Requirements for Tests
+
+build
+flake8
+pylint
+twine
