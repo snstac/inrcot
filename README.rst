@@ -3,9 +3,9 @@ inrcot - Garmin inReach to Cursor-on-Target Gateway.
 
 IF YOU HAVE AN URGENT OPERATIONAL NEED: Email ops@undef.net or call/sms +1-415-598-8226
 
-.. image:: docs/gba-inreach-la-50%25.png
+.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/gba-inreach-la-50%25.png
    :alt: Screenshot of inReach CoT PLI Point in ATAK
-   :target: docs/gba-inreach-la.png
+   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/gba-inreach-la.png
 
 The ``inrcot`` inReach to Cursor-on-Target Gateway transforms Garmin inReach
 position messages into Cursor on Target (CoT) Position Location Information
