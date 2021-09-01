@@ -16,7 +16,7 @@ inReach to Cursor-on-Target Gateway.
 from .constants import (LOG_FORMAT, LOG_LEVEL, DEFAULT_POLL_INTERVAL,  # NOQA
                         DEFAULT_COT_STALE, DEFAULT_COT_TYPE)
 
-from .functions import inreach_to_cot  # NOQA
+from .functions import inreach_to_cot, split_feed  # NOQA
 
 from .classes import InrWorker  # NOQA
 

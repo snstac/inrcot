@@ -17,18 +17,23 @@ __copyright__ = "Copyright 2021 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
-def inreach_to_cot_xml(
-        content: str, feed_conf: dict = None) -> [xml.etree.ElementTree, None]:
+def split_feed(content: str) -> list:
+    """Splits an inReach MapShare KML feed by 'Folder'"""
+    tree = xml.etree.ElementTree.parse(io.BytesIO(content))
+
+    document = tree.find('{http://www.opengis.net/kml/2.2}Document')
+    folder = document.findall("{http://www.opengis.net/kml/2.2}Folder")
+    return folder
+
+
+def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> \
+        [xml.etree.ElementTree, None]:
     """
     Converts an inReach Response to a Cursor-on-Target Event, as an XML Obj.
     """
     feed_conf = feed_conf or {}
-    tree = xml.etree.ElementTree.parse(io.StringIO(content))
 
-    document = tree.find('{http://www.opengis.net/kml/2.2}Document')
-    folder = document.find("{http://www.opengis.net/kml/2.2}Folder")
-
-    placemarks = folder.find("{http://www.opengis.net/kml/2.2}Placemark")
+    placemarks = feed.find("{http://www.opengis.net/kml/2.2}Placemark")
     _point = placemarks.find("{http://www.opengis.net/kml/2.2}Point")
     coordinates = _point.find(
         "{http://www.opengis.net/kml/2.2}coordinates").text
