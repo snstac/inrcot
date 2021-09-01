@@ -2,7 +2,7 @@
 #  single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Tests Python Application
+name: Lint, Style & Test
 
 on:
   push:

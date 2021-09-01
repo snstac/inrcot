@@ -16,7 +16,7 @@ import sys
 import setuptools
 
 __title__ = "inrcot"
-__version__ = "1.0.0b3"
+__version__ = "1.0.0"
 __author__ = "Greg Albrecht W2GMD <oss@undef.net>"
 __copyright__ = "Copyright 2021 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
