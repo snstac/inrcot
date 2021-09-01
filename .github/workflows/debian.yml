@@ -1,4 +1,4 @@
-name: Build Debian package
+name: Build Debian .deb Package from Python
 
 on:
   push:

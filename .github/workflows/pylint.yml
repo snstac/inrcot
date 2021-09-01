@@ -1,4 +1,4 @@
-name: Pylint
+name: Run pylint Python Linter
 
 on: [push]
 
@@ -9,14 +9,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: Install dependencies
+
+    - name: Upgrade PIP
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
+
+    - name: Install Python testing dependencies
       run: |
-        pylint *.py */*.py
+        make install_requirements_test
+
+    - name: Install Python program in 'develop' mode
+      run: |
+        make install_requirements develop
+
+    - name: Lint the Python code with pylint
+      run: |
+        make lint

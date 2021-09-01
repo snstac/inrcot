@@ -6,13 +6,13 @@
 all: develop
 
 install_requirements:
-	pip install -r requirements.txt
+	if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
 install_requirements_test:
-		pip install -r requirements_test.txt
+    pip install -r requirements_test.txt
 
 develop: remember
-	python setup.py develop
+	pip install -e .
 
 install: remember
 	python setup.py install
