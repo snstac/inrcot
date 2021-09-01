@@ -4,3 +4,5 @@ build
 flake8
 pylint
 twine
+setuptools
+wheel
