@@ -64,7 +64,7 @@ Installing as a Debian/Ubuntu Package::
 
     $ wget https://github.com/ampledata/pytak/releases/latest/download/python3-pytak_latest_all.deb
     $ sudo apt install -f ./python3-pytak_latest_all.deb
-    $ wget https://github.com/ampledata/adsbxcot/releases/latest/download/python3-inrcot_latest_all.deb
+    $ wget https://github.com/ampledata/inrcot/releases/latest/download/python3-inrcot_latest_all.deb
     $ sudo apt install -f ./python3-inrcot_latest_all.deb
 
 
