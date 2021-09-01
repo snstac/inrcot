@@ -9,7 +9,7 @@ install_requirements:
 	if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
 install_requirements_test:
-    pip install -r requirements_test.txt
+	pip install -r requirements_test.txt
 
 develop: remember
 	pip install -e .
@@ -56,9 +56,9 @@ publish: build twine_check upload
 
 pep8: remember_test
 	# flake8 --max-complexity 12 --exit-zero *.py */*.py
-    # stop the build if there are Python syntax errors or undefined names
+	# stop the build if there are Python syntax errors or undefined names
 	flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+	# exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
 	flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 flake8: pep8
