@@ -10,7 +10,8 @@ IF YOU HAVE AN URGENT OPERATIONAL NEED: Email ops@undef.net or call/sms +1-415-5
 The ``inrcot`` inReach to Cursor-on-Target Gateway transforms Garmin inReach
 position messages into Cursor on Target (CoT) Position Location Information
 (PLI) Points for display on Situational Awareness (SA) applications such as the
-Android Team Awareness Kit (ATAK), WinTAK, RaptorX, COPERS, et al.
+Android Team Awareness Kit (ATAK), WinTAK, RaptorX, COPERS, et al. Single
+user/device or multiple user/device feeds are supported.
 
 Possible use-cases include tracking Search & Rescue (SAR) operators, or
 integrating Partner Forces location data into existing SA infrastructure
@@ -141,6 +142,23 @@ Individual feeds CoT output can be customized as well::
     COT_NAME = Team Lead
     COT_ICON = my_package/team_lead.png
 
+Protected feeds are also supported::
+
+    [inrcot]
+    COT_URL = tcp:takserver.example.com:8088
+    POLL_INTERVAL = 120
+
+    [inrcot_feed_ppp]
+    FEED_URL = https://share.garmin.com/Feed/Share/ppp
+    FEED_USERNAME = secretsquirrel
+    FEED_PASSWORD = supersecret
+
+Running as a Service
+====================
+
+Example systemd config::
+
+TK TK TK
 
 Source
 ======
