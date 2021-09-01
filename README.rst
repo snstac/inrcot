@@ -3,7 +3,7 @@ inrcot - Garmin inReach to Cursor-on-Target Gateway.
 
 IF YOU HAVE AN URGENT OPERATIONAL NEED: Email ops@undef.net or call/sms +1-415-598-8226
 
-.. image:: docs/gba-inreach-la-50%.png
+.. image:: docs/gba-inreach-la-50%25.png
    :alt: Screenshot of inReach CoT PLI Point in ATAK
    :target: docs/gba-inreach-la.png
 
