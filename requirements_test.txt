@@ -6,3 +6,4 @@ pylint
 twine
 setuptools
 wheel
+pytest
