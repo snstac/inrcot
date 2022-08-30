@@ -4,6 +4,7 @@ Garmin inReach to Cursor on Target Gateway
 .. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
    :alt: Screenshot of inRCoT being used on a Search & Rescue mission in Arizona.
    :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
+
     Pictured: Screenshot of inRCoT being used on a Search & Rescue mission in Arizona.
 
 
