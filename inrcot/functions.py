@@ -1,33 +1,47 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#
+# Copyright 2022 Greg Albrecht <oss@undef.net>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author:: Greg Albrecht W2GMD <oss@undef.net>
+#
 
-"""Spot Cursor-on-Target Gateway Functions."""
+"""SpotCOT Gateway Functions."""
 
 import datetime
 import io
+import xml.etree.ElementTree as ET
 
-import xml.etree.ElementTree
+from typing import Union
 
 import pytak
+import inrcot
 
-import inrcot.constants
 
 __author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2021 Greg Albrecht"
+__copyright__ = "Copyright 2022 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
 def split_feed(content: str) -> list:
     """Splits an inReach MapShare KML feed by 'Folder'"""
-    tree = xml.etree.ElementTree.parse(io.BytesIO(content))
-
+    tree = ET.parse(io.BytesIO(content))
     document = tree.find('{http://www.opengis.net/kml/2.2}Document')
     folder = document.findall("{http://www.opengis.net/kml/2.2}Folder")
     return folder
 
 
-def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> \
-        [xml.etree.ElementTree, None]:
+def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> Union[ET.Element, None]:
     """
     Converts an inReach Response to a Cursor-on-Target Event, as an XML Obj.
     """
@@ -60,29 +74,29 @@ def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> \
     name = feed_conf.get("cot_name") or _name
     callsign = name
 
-    point = xml.etree.ElementTree.Element("point")
+    point = ET.Element("point")
     point.set("lat", str(lat))
     point.set("lon", str(lon))
     point.set("hae", "9999999.0")
     point.set("ce", "9999999.0")
     point.set("le", "9999999.0")
 
-    uid = xml.etree.ElementTree.Element("UID")
+    uid = ET.Element("UID")
     uid.set("Droid", f"{name} (inReach)")
 
-    contact = xml.etree.ElementTree.Element("contact")
+    contact = ET.Element("contact")
     contact.set("callsign", f"{callsign} (inReach)")
 
-    track = xml.etree.ElementTree.Element("track")
+    track = ET.Element("track")
     track.set("course", "9999999.0")
 
-    detail = xml.etree.ElementTree.Element("detail")
+    detail = ET.Element("detail")
     detail.set("uid", name)
     detail.append(uid)
     detail.append(contact)
     detail.append(track)
 
-    remarks = xml.etree.ElementTree.Element("remarks")
+    remarks = ET.Element("remarks")
 
     _remarks = f"Garmin inReach User.\r\n Name: {name}"
 
@@ -90,7 +104,7 @@ def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> \
     remarks.text = _remarks
     detail.append(remarks)
 
-    root = xml.etree.ElementTree.Element("event")
+    root = ET.Element("event")
     root.set("version", "2.0")
     root.set("type", cot_type)
     root.set("uid", f"Garmin-inReach.{name}".replace(" ", ""))
@@ -104,9 +118,7 @@ def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> \
     return root
 
 
-def inreach_to_cot(content: str, feed_conf: dict = None) -> str:
-    """
-    Converts an inReach Response to a Cursor-on-Target Event, as a String.
-    """
-    cot_xml: xml.etree.ElementTree = inreach_to_cot_xml(content, feed_conf)
-    return xml.etree.ElementTree.tostring(cot_xml)
+def inreach_to_cot(content: str, feed_conf: dict = None) -> Union[bytes, None]:
+    """Wrapper that returns COT as an XML string."""
+    cot: Union[ET.Element, None] = inreach_to_cot_xml(content, feed_conf)
+    return ET.tostring(cot) if cot else None

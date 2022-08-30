@@ -1,30 +1,41 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#
+# Copyright 2022 Greg Albrecht <oss@undef.net>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author:: Greg Albrecht W2GMD <oss@undef.net>
+#
 
 """inReach Cursor-on-Target Class Definitions."""
 
 import asyncio
 
 import aiohttp
-import pytak
 
+import pytak
 import inrcot
 
 __author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2021 Greg Albrecht"
+__copyright__ = "Copyright 202s Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
-class InrWorker(pytak.MessageWorker):
+class InrWorker(pytak.QueueWorker):
 
     """Reads inReach Feed, renders to CoT, and puts on a TX queue."""
 
-    def __init__(self, event_queue: asyncio.Queue, config) -> None:
-        super().__init__(event_queue)
-
-        self.poll_interval: int = int(config["inrcot"].get(
-            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL))
-
+    def __init__(self, queue: asyncio.Queue, config) -> None:
+        super().__init__(queue, config)
         self.inreach_feeds: list = []
         self._create_feeds(config)
 
@@ -52,19 +63,17 @@ class InrWorker(pytak.MessageWorker):
 
                 self.inreach_feeds.append(feed_conf)
 
-    async def handle_response(self, content: str, feed_conf: dict) -> None:
+    async def handle_data(self, data: str, feed_conf: dict) -> None:
         """Handles the response from the inReach API."""
-        for feed in inrcot.split_feed(content):
+        for feed in inrcot.split_feed(data):
             event: str = inrcot.inreach_to_cot(feed, feed_conf)
             if event:
-                await self._put_event_queue(event)
+                await self.put_queue(event)
             else:
-                self._logger.debug("Empty CoT Event")
+                self._logger.debug("Empty COT Event")
 
-    async def _get_inreach_feeds(self):
+    async def get_inreach_feeds(self):
         """Gets inReach Feed from API."""
-        self._logger.debug("Polling inReach API")
-
         for feed_conf in self.inreach_feeds:
             feed_auth = feed_conf.get("feed_auth")
             async with aiohttp.ClientSession() as session:
@@ -90,6 +99,9 @@ class InrWorker(pytak.MessageWorker):
         """Runs this Worker, Reads from Pollers."""
         self._logger.info("Running InrWorker")
 
+        poll_interval: int = int(self.config.get(
+            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL))
+
         while 1:
-            await self._get_inreach_feeds()
-            await asyncio.sleep(self.poll_interval)
+            await self.get_inreach_feeds()
+            await asyncio.sleep(poll_interval)
