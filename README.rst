@@ -15,6 +15,11 @@ Other situational awareness products, including as RaptorX, TAKX & COPERS have b
 
 INRCOT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
 
+.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conops.png
+   :alt: Diagram of INRCOT's Concept of Operations (CONOPS).
+   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conops.png
+
+* Pictured: Diagram of INRCOT's Concept of Operations (CONOPS).
 
 Support Development
 ===================
