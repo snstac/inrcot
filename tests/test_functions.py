@@ -27,7 +27,7 @@ class FunctionsTestCase(unittest.TestCase):
 
         point = test_cot.find("point")
 
-        self.assertEqual(test_cot.get("type"), "a-.-G-E-V-C")
+        self.assertEqual(test_cot.get("type"), "a-n-G-E-V-C")
         self.assertEqual(test_cot.get("uid"), "Garmin-inReach.GregAlbrecht")
         self.assertEqual(point.get("lat"), "33.874926")
         self.assertEqual(point.get("lon"), "-118.346915")

@@ -18,7 +18,7 @@
 # License:: Apache License, Version 2.0
 #
 
-this_app = pytak
+this_app = inrcot
 .DEFAULT_GOAL := all
 
 all: editable
