@@ -1,9 +1,5 @@
-# Python Distribution Package Requirements for Tests
-
-build
-flake8
+pytest-asyncio
+pytest-cov
 pylint
-twine
-setuptools
-wheel
-pytest
+flake8
+black

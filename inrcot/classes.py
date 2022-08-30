@@ -16,7 +16,7 @@
 # Author:: Greg Albrecht W2GMD <oss@undef.net>
 #
 
-"""inReach Cursor-on-Target Class Definitions."""
+"""INRCOT Class Definitions."""
 
 import asyncio
 
@@ -25,19 +25,20 @@ import aiohttp
 import pytak
 import inrcot
 
+
 __author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 202s Greg Albrecht"
+__copyright__ = "Copyright 2022 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
-class InrWorker(pytak.QueueWorker):
+class Worker(pytak.QueueWorker):
 
     """Reads inReach Feed, renders to CoT, and puts on a TX queue."""
 
-    def __init__(self, queue: asyncio.Queue, config) -> None:
+    def __init__(self, queue: asyncio.Queue, config, original_config) -> None:
         super().__init__(queue, config)
         self.inreach_feeds: list = []
-        self._create_feeds(config)
+        self._create_feeds(original_config)
 
     def _create_feeds(self, config: dict = None) -> None:
         """Creates a list of feed configurations."""
@@ -90,18 +91,18 @@ class InrWorker(pytak.QueueWorker):
                     return
 
                 if response.status == 200:
-                    await self.handle_response(await response.content.read(),
+                    await self.handle_data(await response.content.read(),
                                                feed_conf)
                 else:
                     self._logger.error("No valid response from inReach API.")
 
     async def run(self) -> None:
         """Runs this Worker, Reads from Pollers."""
-        self._logger.info("Running InrWorker")
+        self._logger.info("Run: %s", self.__class__)
 
-        poll_interval: int = int(self.config.get(
-            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL))
+        poll_interval: str = self.config.get(
+            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL)
 
         while 1:
             await self.get_inreach_feeds()
-            await asyncio.sleep(poll_interval)
+            await asyncio.sleep(int(poll_interval))

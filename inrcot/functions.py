@@ -22,7 +22,8 @@ import datetime
 import io
 import xml.etree.ElementTree as ET
 
-from typing import Union
+from configparser import ConfigParser
+from typing import Union, Set
 
 import pytak
 import inrcot
@@ -31,6 +32,27 @@ import inrcot
 __author__ = "Greg Albrecht W2GMD <oss@undef.net>"
 __copyright__ = "Copyright 2022 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
+
+
+def create_tasks(
+    config: ConfigParser, clitool: pytak.CLITool, original_config: ConfigParser
+) -> Set[pytak.Worker,]:
+    """
+    Creates specific coroutine task set for this application.
+
+    Parameters
+    ----------
+    config : `ConfigParser`
+        Configuration options & values.
+    clitool : `pytak.CLITool`
+        A PyTAK Worker class instance.
+
+    Returns
+    -------
+    `set`
+        Set of PyTAK Worker classes for this application.
+    """
+    return set([inrcot.Worker(clitool.tx_queue, config, original_config)])
 
 
 def split_feed(content: str) -> list:

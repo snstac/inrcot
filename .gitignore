@@ -1,3 +1,4 @@
+.vscode/
 *.deb
 *.egg
 *.egg-info/
@@ -29,8 +30,5 @@ output.xml
 pylint.log
 redis-server.log
 redis-server/
-.python-version
-venv/
-config.ini
-
-*/__pycache__/
+__pycache__
+.ipynb_checkpoints/

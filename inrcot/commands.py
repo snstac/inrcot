@@ -15,83 +15,106 @@
 #
 # Author:: Greg Albrecht W2GMD <oss@undef.net>
 #
-"""inReach Cursor-on-Target Gateway Commands."""
 
-import asyncio
+"""PyTAK Command Line."""
+
 import argparse
-import configparser
+import asyncio
+import importlib
 import logging
+import os
+import platform
 import sys
-import urllib
+
+from configparser import ConfigParser, SectionProxy
 
 import pytak
 
-import inrcot
+__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
+__copyright__ = "Copyright 2022 Greg Albrecht"
+__license__ = "Apache License, Version 2.0"
+
 
 # Python 3.6 support:
 if sys.version_info[:2] >= (3, 7):
     from asyncio import get_running_loop
 else:
-    from asyncio import _get_running_loop as get_running_loop  # NOQA pylint: disable=no-name-in-module
+    from asyncio import get_event_loop as get_running_loop
 
 
-__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2021 Greg Albrecht."
-__license__ = "Apache License, Version 2.0"
+async def main(app_name: str, config: SectionProxy, original_config: ConfigParser) -> None:
+    """
+    Abstract implementation of an async main function.
+
+    Parameters
+    ----------
+    app_name : `str`
+        Name of the app calling this function.
+    config : `SectionProxy`
+        A dict of configuration parameters & values.
+    """
+    app = importlib.__import__(app_name)
+    clitool: pytak.CLITool = pytak.CLITool(config)
+    create_tasks = getattr(app, "create_tasks")
+    await clitool.setup()
+    clitool.add_tasks(create_tasks(config, clitool, original_config))
+    await clitool.run()
 
 
-async def main(config):
-    """Main program function, executes workers, et al."""
-    tx_queue: asyncio.Queue = asyncio.Queue()
-    rx_queue: asyncio.Queue = asyncio.Queue()
+def cli(app_name: str = "inrcot") -> None:
+    """
+    Abstract implementation of a Command Line Interface (CLI).
 
-    cot_url: urllib.parse.ParseResult = urllib.parse.urlparse(
-        config["inrcot"].get("COT_URL"))
+    Parameters
+    ----------
+    app_name : `str`
+        Name of the app calling this function.
+    """
+    app = importlib.__import__(app_name)
 
-    # Create our CoT Event Queue Worker
-    reader, writer = await pytak.protocol_factory(cot_url)
-    write_worker = pytak.EventTransmitter(tx_queue, writer)
-    read_worker = pytak.EventReceiver(rx_queue, reader)
-
-    message_worker = inrcot.InrWorker(tx_queue, config)
-
-    await tx_queue.put(pytak.hello_event("inrcot"))
-
-    done, _ = await asyncio.wait(
-        {message_worker.run(), read_worker.run(), write_worker.run()},
-        return_when=asyncio.FIRST_COMPLETED)
-
-    for task in done:
-        print(f"Task completed: {task}")
-
-
-def cli():
-    """Command Line interface for inReach Cursor-on-Target Gateway."""
-
-    # Get cli arguments:
     parser = argparse.ArgumentParser()
-
-    parser.add_argument("-c", "--CONFIG_FILE", dest="CONFIG_FILE",
-                        default="config.ini", type=str)
+    parser.add_argument(
+        "-c",
+        "--CONFIG_FILE",
+        dest="CONFIG_FILE",
+        default="config.ini",
+        type=str,
+        help="Optional configuration file. Default: config.ini",
+    )
     namespace = parser.parse_args()
     cli_args = {k: v for k, v in vars(namespace).items() if v is not None}
 
-    # Read config file:
-    config = configparser.ConfigParser()
+    # Read config:
+    env_vars = os.environ
+    env_vars["COT_URL"] = env_vars.get("COT_URL", pytak.DEFAULT_COT_URL)
+    env_vars["COT_HOST_ID"] = f"{app_name}@{platform.node()}"
+    env_vars["COT_STALE"] = getattr(app, "DEFAULT_COT_STALE", pytak.DEFAULT_COT_STALE)
+    config: ConfigParser = ConfigParser(env_vars)
 
     config_file = cli_args.get("CONFIG_FILE")
-    logging.info("Reading configuration from %s", config_file)
-    config.read(config_file)
+    if os.path.exists(config_file):
+        logging.info("Reading configuration from %s", config_file)
+        config.read(config_file)
+    else:
+        config.add_section(app_name)
+
+    original_config: ConfigParser = config
+    config: SectionProxy = config[app_name]
+
+    debug = config.getboolean("DEBUG")
+    if debug:
+        import pprint  # pylint: disable=import-outside-toplevel
+        # FIXME: This doesn't work with weird bash escape stuff.
+        print("Showing Config: %s", config_file)
+        print("=" * 10)
+        pprint.pprint(config)
+        print("=" * 10)
 
     if sys.version_info[:2] >= (3, 7):
-        asyncio.run(main(config), debug=config["inrcot"].getboolean("DEBUG"))
+        asyncio.run(main(app_name, config, original_config), debug=debug)
     else:
         loop = get_running_loop()
         try:
-            loop.run_until_complete(main(config))
+            loop.run_until_complete(main(app_name, config, original_config))
         finally:
             loop.close()
-
-
-if __name__ == '__main__':
-    cli()

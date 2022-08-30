@@ -34,16 +34,15 @@ Use Cases
 =========
 
 There are numerous applications for satellite based position location information, 
-including:
+including::
 
 1. Blue Force Tracking
 2. Search & Rescue (SAR)
 3. Partner Forces PLI
 4. Asset Tracking
 5. Data diode, CDS & cybersecurity considerations
-6. Wildland Firefighting / Dingell Act
 
-``inrcot`` may also be of use in wildland firefighting, see Section 1114.d of
+INRCOT may also be of use in wildland firefighting, see Section 1114.d of
 the `Dingell Act <https://www.congress.gov/bill/116th-congress/senate-bill/47/text>`_::
 
     Location Systems for Wildland Firefighters.--
