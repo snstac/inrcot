@@ -1,43 +1,46 @@
-inrcot - Garmin inReach to Cursor-on-Target Gateway.
-****************************************************
+Garmin inReach to Cursor on Target Gateway
+******************************************
 
-IF YOU HAVE AN URGENT OPERATIONAL NEED: Email ops@undef.net or call/sms +1-415-598-8226
+.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
+   :alt: Screenshot of inRCoT being used on a Search & Rescue mission in Arizona.
+   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
 
-.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/gba-inreach-la-50%25.png
-   :alt: Screenshot of inReach CoT PLI Point in ATAK
-   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/gba-inreach-la.png
+The inReach to Cursor on Target Gateway (**inRCoT**) transforms Garmin inReach
+position messages into Cursor on Target (CoT) Points for display on TAK Products 
+like ATAK, WinTAK, iTAK, et al. Single or multi-device feeds are supported.
 
-The ``inrcot`` inReach to Cursor-on-Target Gateway transforms Garmin inReach
-position messages into Cursor on Target (CoT) Position Location Information
-(PLI) Points for display on Situational Awareness (SA) applications such as the
-Android Team Awareness Kit (ATAK), WinTAK, RaptorX, COPERS, et al. Single
-user/device or multiple user/device feeds are supported.
+Other situational awareness products, including as RaptorX, TAKX & COPERS have been tested.
 
-Possible use-cases include tracking Search & Rescue (SAR) operators, or
-integrating Partner Forces location data into existing SA infrastructure
-without exposing private network elements.
+inRCoT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
 
-``inrcot`` can be run as a foreground command line application, but should be
-run as a service with tools like systemd or `supervisor <http://supervisord.org/>`_
 
-Usage of this program requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
+Support Development
+===================
 
-Support inrcot Development
-============================
+**Tech Support**: Email support@undef.net or Signal/WhatsApp: +1-310-621-9598
 
-inrcot has been developed for the Disaster Response, Public Safety and
-Frontline community at-large. This software is currently provided at no-cost to
-our end-users. All development is self-funded and all time-spent is entirely
-voluntary. Any contribution you can make to further these software development
-efforts, and the mission of inrcot to provide ongoing SA capabilities to our
-end-users, is greatly appreciated:
+This tool has been developed for the Disaster Response, Public Safety and
+Frontline Healthcare community. This software is currently provided at no-cost
+to users. Any contribution you can make to further this project's development
+efforts is greatly appreciated.
 
 .. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
     :target: https://www.buymeacoffee.com/ampledata
-    :alt: Support inrcot development: Buy me a coffee!
+    :alt: Support Development: Buy me a coffee!
 
-Wildland Firefighting
-=====================
+
+Use Cases
+=========
+
+There are numerous applications for satellite based position location information, 
+including:
+
+1. Blue Force Tracking
+2. Search & Rescue (SAR)
+3. Partner Forces PLI
+4. Asset Tracking
+5. Data diode, CDS & cybersecurity considerations
+6. Wildland Firefighting / Dingell Act
 
 ``inrcot`` may also be of use in wildland firefighting, see Section 1114.d of
 the `Dingell Act <https://www.congress.gov/bill/116th-congress/senate-bill/47/text>`_::
@@ -58,26 +61,25 @@ Installation
 ============
 
 The Garmin inReach to Cursor on Target Gateway is provided by a command-line
-tool called `inrcot`:
+tool called ``inrcot``:
 
-Installing as a Debian/Ubuntu Package::
-
+Debian, Ubuntu, Raspbian, Raspberry OS::
+    
+    $ sudo apt update
     $ wget https://github.com/ampledata/pytak/releases/latest/download/python3-pytak_latest_all.deb
     $ sudo apt install -f ./python3-pytak_latest_all.deb
     $ wget https://github.com/ampledata/inrcot/releases/latest/download/python3-inrcot_latest_all.deb
     $ sudo apt install -f ./python3-inrcot_latest_all.deb
 
+CentOS, et al::
 
-Install from the Python Package Index (PyPI)::
+    $ sudo python3 -m pip install inrcot
 
-    $ pip install inrcot
-
-
-Install from this source tree::
-
+Install from source::
+    
     $ git clone https://github.com/ampledata/inrcot.git
     $ cd inrcot/
-    $ python setup.py install
+    $ python3 setup.py install
 
 
 Setup
@@ -93,6 +95,7 @@ Setup
 
 For more information on inReach KML Feeds see: https://support.garmin.com/en-US/?faq=tdlDCyo1fJ5UxjUbA9rMY8
 
+
 Usage
 =====
 
@@ -105,13 +108,29 @@ The `inrcot` program has one command-line argument::
       -h, --help            show this help message and exit
       -c CONFIG_FILE, --CONFIG_FILE CONFIG_FILE
 
-You must create a configuration file, see `example-config.ini` in the source
-respository.
+
+Configuration
+=============
+
+Configuration parameters can be specified either via environment variables or in
+a INI-stile configuration file. You must create a configuration file, see 
+`example-config.ini` in the source respository.
+
+Parameters::
+
+* **DEFAULT_POLL_INTERVAL**: How many seconds between checking for new messages at the Spot API? Default: 120 (seconds).
+* **DEFAULT_COT_STALE**: How many seconds until CoT is stale? Default: 600 (seconds)
+* **DEFAULT_COT_TYPE**: "a-n-G-E-V-C" # CoT Event Type / 2525 type / SIDC-like. Default: neutral ground
+
+
+Example Configurations
+======================
+
 
 An example config::
 
     [inrcot]
-    COT_URL = tcp:takserver.example.com:8088
+    COT_URL = tcp://takserver.example.com:8088
     POLL_INTERVAL = 120
 
     [inrcot_feed_aaa]
@@ -120,7 +139,7 @@ An example config::
 Multiple feeds can be added by creating multiple `inrcot_feed` sections::
 
     [inrcot]
-    COT_URL = tcp:takserver.example.com:8088
+    COT_URL = tcp://takserver.example.com:8088
     POLL_INTERVAL = 120
 
     [inrcot_feed_xxx]
@@ -153,27 +172,35 @@ Protected feeds are also supported::
     FEED_USERNAME = secretsquirrel
     FEED_PASSWORD = supersecret
 
-Running as a Service
-====================
 
-Example systemd config::
-
-TK TK TK
 
 Source
 ======
-Github: https://github.com/ampledata/inrcot
+inRCoT Source can be found on Github: https://github.com/ampledata/inrcot
+
 
 Author
 ======
-Greg Albrecht W2GMD oss@undef.net
+inRCoT is written and maintained by Greg Albrecht W2GMD oss@undef.net
 
 https://ampledata.org/
 
+
 Copyright
 =========
-Copyright 2021 Greg Albrecht
+inRCoT is Copyright 2022 Greg Albrecht
+
 
 License
 =======
-Apache License, Version 2.0. See LICENSE for details.
+Copyright 2022 Greg Albrecht <oss@undef.net>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
