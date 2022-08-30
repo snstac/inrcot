@@ -47,19 +47,20 @@ class Worker(pytak.QueueWorker):
                 feed_conf = {
                     "feed_url": config[feed].get("FEED_URL"),
                     "cot_stale": config[feed].get(
-                        "COT_STALE", inrcot.DEFAULT_COT_STALE),
-                    "cot_type": config[feed].get(
-                        "COT_TYPE", inrcot.DEFAULT_COT_TYPE),
+                        "COT_STALE", inrcot.DEFAULT_COT_STALE
+                    ),
+                    "cot_type": config[feed].get("COT_TYPE", inrcot.DEFAULT_COT_TYPE),
                     "cot_icon": config[feed].get("COT_ICON"),
                     "cot_name": config[feed].get("COT_NAME"),
                 }
 
                 # Support "private" MapShare feeds:
-                if config[feed].get("FEED_PASSWORD") and \
-                        config[feed].get("FEED_USERNAME"):
+                if config[feed].get("FEED_PASSWORD") and config[feed].get(
+                    "FEED_USERNAME"
+                ):
                     feed_conf["feed_auth"] = aiohttp.BasicAuth(
                         config[feed].get("FEED_USERNAME"),
-                        config[feed].get("FEED_PASSWORD")
+                        config[feed].get("FEED_PASSWORD"),
                     )
 
                 self.inreach_feeds.append(feed_conf)
@@ -80,19 +81,15 @@ class Worker(pytak.QueueWorker):
             async with aiohttp.ClientSession() as session:
                 try:
                     response = await session.request(
-                        method="GET",
-                        auth=feed_auth,
-                        url=feed_conf.get("feed_url")
+                        method="GET", auth=feed_auth, url=feed_conf.get("feed_url")
                     )
                 except Exception as exc:  # NOQA pylint: disable=broad-except
-                    self._logger.error(
-                        "Exception raised while polling inReach API.")
+                    self._logger.error("Exception raised while polling inReach API.")
                     self._logger.exception(exc)
                     return
 
                 if response.status == 200:
-                    await self.handle_data(await response.content.read(),
-                                               feed_conf)
+                    await self.handle_data(await response.content.read(), feed_conf)
                 else:
                     self._logger.error("No valid response from inReach API.")
 
@@ -101,7 +98,8 @@ class Worker(pytak.QueueWorker):
         self._logger.info("Run: %s", self.__class__)
 
         poll_interval: str = self.config.get(
-            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL)
+            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL
+        )
 
         while 1:
             await self.get_inreach_feeds()

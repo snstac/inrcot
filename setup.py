@@ -64,15 +64,10 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     zip_safe=False,
     include_package_data=True,
-    install_requires=[
-        "pytak >= 5.0.0",
-        "aiohttp"
-    ],
+    install_requires=["pytak >= 5.0.0", "aiohttp"],
     classifiers=[
         "Programming Language :: Python",
-        "License :: OSI Approved :: Apache Software License"
+        "License :: OSI Approved :: Apache Software License",
     ],
-    keywords=[
-        "Satellite", "Cursor on Target", "ATAK", "TAK", "CoT"
-    ],
+    keywords=["Satellite", "Cursor on Target", "ATAK", "TAK", "CoT"],
 )

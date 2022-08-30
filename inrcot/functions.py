@@ -58,7 +58,7 @@ def create_tasks(
 def split_feed(content: str) -> list:
     """Splits an inReach MapShare KML feed by 'Folder'"""
     tree = ET.parse(io.BytesIO(content))
-    document = tree.find('{http://www.opengis.net/kml/2.2}Document')
+    document = tree.find("{http://www.opengis.net/kml/2.2}Document")
     folder = document.findall("{http://www.opengis.net/kml/2.2}Folder")
     return folder
 
@@ -71,8 +71,7 @@ def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> Union[ET.Element, N
 
     placemarks = feed.find("{http://www.opengis.net/kml/2.2}Placemark")
     _point = placemarks.find("{http://www.opengis.net/kml/2.2}Point")
-    coordinates = _point.find(
-        "{http://www.opengis.net/kml/2.2}coordinates").text
+    coordinates = _point.find("{http://www.opengis.net/kml/2.2}coordinates").text
     _name = placemarks.find("{http://www.opengis.net/kml/2.2}name").text
 
     ts = placemarks.find("{http://www.opengis.net/kml/2.2}TimeStamp")
@@ -87,9 +86,10 @@ def inreach_to_cot_xml(feed: str, feed_conf: dict = None) -> Union[ET.Element, N
     # We want to use localtime + stale instead of lastUpdate time + stale
     # This means a device could go offline and we might not know it?
     _cot_stale = feed_conf.get("cot_stale", inrcot.DEFAULT_COT_STALE)
-    cot_stale = (datetime.datetime.now(datetime.timezone.utc) +
-                 datetime.timedelta(
-                     seconds=int(_cot_stale))).strftime(pytak.ISO_8601_UTC)
+    cot_stale = (
+        datetime.datetime.now(datetime.timezone.utc)
+        + datetime.timedelta(seconds=int(_cot_stale))
+    ).strftime(pytak.ISO_8601_UTC)
 
     cot_type = feed_conf.get("cot_type", inrcot.DEFAULT_COT_TYPE)
 

@@ -42,7 +42,9 @@ else:
     from asyncio import get_event_loop as get_running_loop
 
 
-async def main(app_name: str, config: SectionProxy, original_config: ConfigParser) -> None:
+async def main(
+    app_name: str, config: SectionProxy, original_config: ConfigParser
+) -> None:
     """
     Abstract implementation of an async main function.
 
@@ -104,6 +106,7 @@ def cli(app_name: str = "inrcot") -> None:
     debug = config.getboolean("DEBUG")
     if debug:
         import pprint  # pylint: disable=import-outside-toplevel
+
         # FIXME: This doesn't work with weird bash escape stuff.
         print("Showing Config: %s", config_file)
         print("=" * 10)

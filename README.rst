@@ -4,6 +4,7 @@ Garmin inReach to Cursor on Target Gateway
 .. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
    :alt: Screenshot of INRCOT being used on a Search & Rescue mission in Arizona.
    :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
+
 * Pictured: Screenshot of INRCOT being used on a Search & Rescue mission in Arizona.
 
 The inReach to Cursor on Target Gateway (INRCOT) transforms Garmin inReach
@@ -34,7 +35,7 @@ Use Cases
 =========
 
 There are numerous applications for satellite based position location information, 
-including::
+including:
 
 1. Blue Force Tracking
 2. Search & Rescue (SAR)
@@ -115,11 +116,13 @@ Configuration parameters can be specified either via environment variables or in
 a INI-stile configuration file. You must create a configuration file, see 
 `example-config.ini` in the source respository.
 
-Parameters::
+Parameters:
 
 * **DEFAULT_POLL_INTERVAL**: How many seconds between checking for new messages at the Spot API? Default: 120 (seconds).
 * **DEFAULT_COT_STALE**: How many seconds until CoT is stale? Default: 600 (seconds)
-* **DEFAULT_COT_TYPE**: "a-n-G-E-V-C" # CoT Event Type / 2525 type / SIDC-like. Default: neutral ground
+* **DEFAULT_COT_TYPE**: CoT Event Type / 2525 type / SIDC-like. Default: neutral ground
+
+TLS & other configuration parameters available via `PyTAK <https://github.com/ampledata/pytak#configuration-parameters>`_.
 
 
 Example Configurations
@@ -149,7 +152,7 @@ Multiple feeds can be added by creating multiple `inrcot_feed` sections::
 Individual feeds CoT output can be customized as well::
 
     [inrcot]
-    COT_URL = tcp:takserver.example.com:8088
+    COT_URL = tcp://takserver.example.com:8088
     POLL_INTERVAL = 120
 
     [inrcot_feed_zzz]
@@ -162,7 +165,7 @@ Individual feeds CoT output can be customized as well::
 Protected feeds are also supported::
 
     [inrcot]
-    COT_URL = tcp:takserver.example.com:8088
+    COT_URL = tcp://takserver.example.com:8088
     POLL_INTERVAL = 120
 
     [inrcot_feed_ppp]
