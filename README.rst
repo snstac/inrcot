@@ -2,17 +2,17 @@ Garmin inReach to Cursor on Target Gateway
 ******************************************
 
 .. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
-   :alt: Screenshot of inRCoT being used on a Search & Rescue mission in Arizona.
+   :alt: Screenshot of INRCOT being used on a Search & Rescue mission in Arizona.
    :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/az-ccso-sar.jpg
-* Pictured: Screenshot of inRCoT being used on a Search & Rescue mission in Arizona.
+* Pictured: Screenshot of INRCOT being used on a Search & Rescue mission in Arizona.
 
-The inReach to Cursor on Target Gateway (**inRCoT**) transforms Garmin inReach
+The inReach to Cursor on Target Gateway (INRCOT) transforms Garmin inReach
 position messages into Cursor on Target (CoT) Points for display on TAK Products 
 like ATAK, WinTAK, iTAK, et al. Single or multi-device feeds are supported.
 
 Other situational awareness products, including as RaptorX, TAKX & COPERS have been tested.
 
-inRCoT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
+INRCOT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
 
 
 Support Development
@@ -58,11 +58,25 @@ the `Dingell Act <https://www.congress.gov/bill/116th-congress/senate-bill/47/te
         management teams.
 
 
-Installation
+Requirements
 ============
 
-The Garmin inReach to Cursor on Target Gateway is provided by a command-line
-tool called ``inrcot``:
+INRCOT uses the Garmin Explore "MapShare" feature.
+
+1. Login to Garmin Explore: https://explore.garmin.com/
+2. Browse to the "MY INFO" page: https://explore.garmin.com/Inbox
+3. Click "Social".
+4. Under MapShare > Enable MapShare click to enable 'MapShare: On'.
+5. Click "Feeds" and note the "Raw KML Data" URL, we'll use this URL, write it down.
+
+For more information on inReach KML Feeds see: https://support.garmin.com/en-US/?faq=tdlDCyo1fJ5UxjUbA9rMY8
+
+
+Install
+=======
+
+INRCOT functionality is provided via a command-line tool named ``inrcot``. 
+To install ``inrcot``:
 
 Debian, Ubuntu, Raspbian, Raspberry OS::
     
@@ -83,32 +97,17 @@ Install from source::
     $ python3 setup.py install
 
 
-Setup
-=====
-
-``inrcot`` uses the Garmin Explore "MapShare" feature.
-
-1. Login to Garmin Explore: https://explore.garmin.com/
-2. Browse to the "MY INFO" page: https://explore.garmin.com/Inbox
-3. Click "Social".
-4. Under MapShare > Enable MapShare click to enable 'MapShare: On'.
-5. Click "Feeds" and note the "Raw KML Data" URL, we'll use this URL.
-
-For more information on inReach KML Feeds see: https://support.garmin.com/en-US/?faq=tdlDCyo1fJ5UxjUbA9rMY8
-
-
 Usage
 =====
 
-The `inrcot` program has one command-line argument::
+The ``inrcot`` program has two command-line arguments::
 
     $ inrcot -h
     usage: inrcot [-h] [-c CONFIG_FILE]
 
     optional arguments:
       -h, --help            show this help message and exit
-      -c CONFIG_FILE, --CONFIG_FILE CONFIG_FILE
-
+      -c CONFIG_FILE, --CONFIG_FILE     Sets the path to a config file. Default: config.ini
 
 Configuration
 =============
@@ -126,7 +125,6 @@ Parameters::
 
 Example Configurations
 ======================
-
 
 An example config::
 
@@ -177,19 +175,19 @@ Protected feeds are also supported::
 
 Source
 ======
-inRCoT Source can be found on Github: https://github.com/ampledata/inrcot
+INRCOT Source can be found on Github: https://github.com/ampledata/inrcot
 
 
 Author
 ======
-inRCoT is written and maintained by Greg Albrecht W2GMD oss@undef.net
+INRCOT is written and maintained by Greg Albrecht W2GMD oss@undef.net
 
 https://ampledata.org/
 
 
 Copyright
 =========
-inRCoT is Copyright 2022 Greg Albrecht
+INRCOT is Copyright 2022 Greg Albrecht
 
 
 License
