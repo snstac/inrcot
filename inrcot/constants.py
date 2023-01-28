@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 Greg Albrecht <oss@undef.net>
+# Copyright 2023 Greg Albrecht <oss@undef.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author:: Greg Albrecht W2GMD <oss@undef.net>
-#
 
 """INRCOT Constants."""
 
-__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2021 Greg Albrecht"
+__author__ = "Greg Albrecht <oss@undef.net>"
+__copyright__ = "Copyright 2023 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
@@ -29,5 +27,5 @@ DEFAULT_POLL_INTERVAL: int = 120
 # How longer after producting the CoT Event is the Event 'stale' (seconds)
 DEFAULT_COT_STALE: str = "600"
 
-# CoT Event Type / 2525 type / SIDC-like
-DEFAULT_COT_TYPE: str = "a-n-G-E-V-C"
+# Default CoT type. 'a-f-g-e-s' works in iTAK, WinTAK & ATAK...
+DEFAULT_COT_TYPE: str = "a-f-g-e-s"

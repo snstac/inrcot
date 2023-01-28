@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 Greg Albrecht <oss@undef.net>
+# Copyright 2023 Greg Albrecht <oss@undef.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author:: Greg Albrecht W2GMD <oss@undef.net>
-#
 
 """PyTAK Command Line."""
 
@@ -24,22 +22,24 @@ import importlib
 import logging
 import os
 import platform
+import pprint
 import sys
+import warnings
 
 from configparser import ConfigParser, SectionProxy
 
 import pytak
 
-__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2022 Greg Albrecht"
-__license__ = "Apache License, Version 2.0"
-
-
 # Python 3.6 support:
 if sys.version_info[:2] >= (3, 7):
     from asyncio import get_running_loop
 else:
+    warnings.warn("Using Python < 3.7, consider upgrading Python.")
     from asyncio import get_event_loop as get_running_loop
+
+__author__ = "Greg Albrecht <oss@undef.net>"
+__copyright__ = "Copyright 2023 Greg Albrecht"
+__license__ = "Apache License, Version 2.0"
 
 
 async def main(
@@ -83,41 +83,55 @@ def cli(app_name: str = "inrcot") -> None:
         type=str,
         help="Optional configuration file. Default: config.ini",
     )
+    parser.add_argument(
+        "-p",
+        "--PREF_PACKAGE",
+        dest="PREF_PACKAGE",
+        required=False,
+        type=str,
+        help="Optional connection preferences package zip file (aka data package).",
+    )
     namespace = parser.parse_args()
     cli_args = {k: v for k, v in vars(namespace).items() if v is not None}
 
     # Read config:
     env_vars = os.environ
+
+    # Remove env vars that contain '%', which ConfigParser or pprint barf on:
+    env_vars = {key: val for key, val in env_vars.items() if "%" not in val}
+
     env_vars["COT_URL"] = env_vars.get("COT_URL", pytak.DEFAULT_COT_URL)
     env_vars["COT_HOST_ID"] = f"{app_name}@{platform.node()}"
     env_vars["COT_STALE"] = getattr(app, "DEFAULT_COT_STALE", pytak.DEFAULT_COT_STALE)
-    config: ConfigParser = ConfigParser(env_vars)
+
+    orig_config: ConfigParser = ConfigParser(env_vars)
 
     config_file = cli_args.get("CONFIG_FILE")
-    if os.path.exists(config_file):
+    if config_file and os.path.exists(config_file):
         logging.info("Reading configuration from %s", config_file)
-        config.read(config_file)
+        orig_config.read(config_file)
     else:
-        config.add_section(app_name)
+        orig_config.add_section(app_name)
 
-    original_config: ConfigParser = config
-    config: SectionProxy = config[app_name]
+    config: SectionProxy = orig_config[app_name]
+
+    pref_package: str = config.get("PREF_PACKAGE", cli_args.get("PREF_PACKAGE"))
+    if pref_package and os.path.exists(pref_package):
+        pref_config = pytak.read_pref_package(pref_package)
+        config.update(pref_config)
 
     debug = config.getboolean("DEBUG")
     if debug:
-        import pprint  # pylint: disable=import-outside-toplevel
-
-        # FIXME: This doesn't work with weird bash escape stuff.
-        print("Showing Config: %s", config_file)
+        print(f"Showing Config: {config_file}")
         print("=" * 10)
-        pprint.pprint(config)
+        pprint.pprint(dict(config))
         print("=" * 10)
 
     if sys.version_info[:2] >= (3, 7):
-        asyncio.run(main(app_name, config, original_config), debug=debug)
+        asyncio.run(main(app_name, config, orig_config), debug=debug)
     else:
         loop = get_running_loop()
         try:
-            loop.run_until_complete(main(app_name, config, original_config))
+            loop.run_until_complete(main(app_name, config, orig_config))
         finally:
             loop.close()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 Greg Albrecht <oss@undef.net>
+# Copyright 2023 Greg Albrecht <oss@undef.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author:: Greg Albrecht W2GMD <oss@undef.net>
-#
 
-"""
-inReach to Cursor-on-Target Gateway.
-~~~~
 
-:author: Greg Albrecht W2GMD <oss@undef.net>
-:copyright: Copyright 2022 Greg Albrecht
+"""inReach to Cursor on Target Gateway.
+
+:author: Greg Albrecht <oss@undef.net>
+:copyright: Copyright 2023 Greg Albrecht
 :license: Apache License, Version 2.0
 :source: <https://github.com/ampledata/inrcot>
 """
 
 from .constants import DEFAULT_POLL_INTERVAL, DEFAULT_COT_STALE, DEFAULT_COT_TYPE
 
-from .functions import create_tasks, inreach_to_cot, split_feed
+from .functions import create_tasks, inreach_to_cot, split_feed, create_feeds
 
 from .classes import Worker
 
-__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2022 Greg Albrecht"
+__author__ = "Greg Albrecht <oss@undef.net>"
+__copyright__ = "Copyright 2023 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"

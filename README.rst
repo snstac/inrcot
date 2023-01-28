@@ -8,28 +8,24 @@ Garmin inReach to Cursor on Target Gateway
 * Pictured: Screenshot of INRCOT being used on a Search & Rescue mission in Arizona.
 
 The inReach to Cursor on Target Gateway (INRCOT) transforms Garmin inReach
-position messages into Cursor on Target (CoT) Points for display on TAK Products 
-like ATAK, WinTAK, iTAK, et al. Single or multi-device feeds are supported.
+position messages into Cursor on Target (CoT) for display on TAK Products such as 
+ATAK, WinTAK, iTAK, et al. Single or multi-device feeds are supported.
 
-Other situational awareness products, including as RaptorX, TAKX & COPERS have been tested.
+Other situational awareness products, including as RaptorX, TAKX & COPERS have been 
+tested.
 
-INRCOT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ device with service.
+INRCOT requires a `Garmin inReach <https://discover.garmin.com/en-US/inreach/personal/>`_ 
+device with service.
 
-.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conops.png
-   :alt: Diagram of INRCOT's Concept of Operations (CONOPS).
-   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conops.png
+.. image:: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conop.png
+   :alt: Diagram of INRCOT's Concept of Operations (CONOP).
+   :target: https://raw.githubusercontent.com/ampledata/inrcot/main/docs/inrcot-conop.png
 
-* Pictured: Diagram of INRCOT's Concept of Operations (CONOPS).
+* Pictured: Diagram of INRCOT's Concept of Operations (CONOP).
+
 
 Support Development
 ===================
-
-**Tech Support**: Email support@undef.net or Signal/WhatsApp: +1-310-621-9598
-
-This tool has been developed for the Disaster Response, Public Safety and
-Frontline Healthcare community. This software is currently provided at no-cost
-to users. Any contribution you can make to further this project's development
-efforts is greatly appreciated.
 
 .. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
     :target: https://www.buymeacoffee.com/ampledata
@@ -42,14 +38,14 @@ Use Cases
 There are numerous applications for satellite based position location information, 
 including:
 
-1. Blue Force Tracking
-2. Search & Rescue (SAR)
-3. Partner Forces PLI
-4. Asset Tracking
-5. Data diode, CDS & cybersecurity considerations
+1. Wildland fire unit tracking
+2. Blue Force Tracking
+3. Search & Rescue (SAR)
+4. Partner Forces PLI
+5. Asset Tracking
+6. Data diode, CDS & cybersecurity considerations
 
-INRCOT may also be of use in wildland firefighting, see Section 1114.d of
-the `Dingell Act <https://www.congress.gov/bill/116th-congress/senate-bill/47/text>`_::
+See also Section 1114.d of the `Dingell Act <https://www.congress.gov/bill/116th-congress/senate-bill/47/text>`_::
 
     Location Systems for Wildland Firefighters.--
     (1) In general.--Not later than 2 years after the date of
@@ -108,24 +104,38 @@ Usage
 The ``inrcot`` program has two command-line arguments::
 
     $ inrcot -h
-    usage: inrcot [-h] [-c CONFIG_FILE]
+    usage: inrcot [-h] [-c CONFIG_FILE] [-p PREF_PACKAGE]
 
     optional arguments:
-      -h, --help            show this help message and exit
-      -c CONFIG_FILE, --CONFIG_FILE     Sets the path to a config file. Default: config.ini
+    -h, --help            show this help message and exit
+    -c CONFIG_FILE, --CONFIG_FILE CONFIG_FILE
+                            Optional configuration file. Default: config.ini
+    -p PREF_PACKAGE, --PREF_PACKAGE PREF_PACKAGE
+                            Optional connection preferences package zip file (aka data package).
+
 
 Configuration
 =============
 
 Configuration parameters can be specified either via environment variables or in
-a INI-stile configuration file. You must create a configuration file, see 
-`example-config.ini` in the source respository.
+a INI-stile configuration file. An example configuration file, click here for an 
+example configuration file `example-config.ini <https://github.com/ampledata/inrcot/blob/main/example-config.ini>`_.
 
-Parameters:
+Global Config Parameters:
 
-* **DEFAULT_POLL_INTERVAL**: How many seconds between checking for new messages at the Spot API? Default: 120 (seconds).
-* **DEFAULT_COT_STALE**: How many seconds until CoT is stale? Default: 600 (seconds)
-* **DEFAULT_COT_TYPE**: CoT Event Type / 2525 type / SIDC-like. Default: neutral ground
+* **POLL_INTERVAL**: How many seconds between checking for new messages at the Spot API? Default: ``120`` (seconds).
+* **COT_STALE**: How many seconds until CoT is stale? Default: ``600`` (seconds)
+* **COT_TYPE**: CoT Type. Default: ``a-f-g-e-s``
+
+For each feed (1 inReach = 1 feed, multiple feeds supported), these config params can be set:
+
+* **FEED_URL**: URL to the MapShare KML.
+* **COT_STALE**: How many seconds until CoT is stale? Default: ``600`` (seconds)
+* **COT_TYPE**: CoT Type. Default: ``a-f-g-e-s``
+* **COT_NAME**: CoT Callsign. Defaults to the MapShare KML Placemark name.
+* **COT_ICON**: CoT User Icon. If set, will set the CoT ``usericon`` element, for use with custom TAK icon sets.
+* **FEED_USERNAME**: MapShare username, for use with protected MapShare.
+* **FEED_PASSWORD**: MapShare password, for use with protected MapShare.
 
 TLS & other configuration parameters available via `PyTAK <https://github.com/ampledata/pytak#configuration-parameters>`_.
 
@@ -194,12 +204,12 @@ https://ampledata.org/
 
 Copyright
 =========
-INRCOT is Copyright 2022 Greg Albrecht
+INRCOT is Copyright 2023 Greg Albrecht
 
 
 License
 =======
-Copyright 2022 Greg Albrecht <oss@undef.net>
+Copyright 2023 Greg Albrecht <oss@undef.net>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

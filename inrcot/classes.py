@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 Greg Albrecht <oss@undef.net>
+# Copyright 2023 Greg Albrecht <oss@undef.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author:: Greg Albrecht W2GMD <oss@undef.net>
-#
+
 
 """INRCOT Class Definitions."""
 
 import asyncio
+
+from typing import Optional
 
 import aiohttp
 
@@ -26,81 +27,71 @@ import pytak
 import inrcot
 
 
-__author__ = "Greg Albrecht W2GMD <oss@undef.net>"
-__copyright__ = "Copyright 2022 Greg Albrecht"
+__author__ = "Greg Albrecht <oss@undef.net>"
+__copyright__ = "Copyright 2023 Greg Albrecht"
 __license__ = "Apache License, Version 2.0"
 
 
 class Worker(pytak.QueueWorker):
+    """Read inReach Feed, renders to CoT, and puts on a TX queue."""
 
-    """Reads inReach Feed, renders to CoT, and puts on a TX queue."""
-
-    def __init__(self, queue: asyncio.Queue, config, original_config) -> None:
+    def __init__(self, queue: asyncio.Queue, config, orig_config) -> None:
         super().__init__(queue, config)
-        self.inreach_feeds: list = []
-        self._create_feeds(original_config)
+        self.inreach_feeds: list = inrcot.create_feeds(orig_config)
 
-    def _create_feeds(self, config: dict = None) -> None:
-        """Creates a list of feed configurations."""
-        for feed in config.sections():
-            if "inrcot_feed_" in feed:
-                feed_conf = {
-                    "feed_url": config[feed].get("FEED_URL"),
-                    "cot_stale": config[feed].get(
-                        "COT_STALE", inrcot.DEFAULT_COT_STALE
-                    ),
-                    "cot_type": config[feed].get("COT_TYPE", inrcot.DEFAULT_COT_TYPE),
-                    "cot_icon": config[feed].get("COT_ICON"),
-                    "cot_name": config[feed].get("COT_NAME"),
-                }
+    async def handle_data(self, data: bytes, feed_conf: dict) -> None:
+        """Handle the response from the inReach API."""
+        feeds: Optional[list] = inrcot.split_feed(data)
+        if not feeds:
+            return None
+        for feed in feeds:
+            event: Optional[bytes] = inrcot.inreach_to_cot(feed, feed_conf)
+            if not event:
+                self._logger.debug("Empty CoT Event")
+                continue
+            await self.put_queue(event)
 
-                # Support "private" MapShare feeds:
-                if config[feed].get("FEED_PASSWORD") and config[feed].get(
-                    "FEED_USERNAME"
-                ):
-                    feed_conf["feed_auth"] = aiohttp.BasicAuth(
-                        config[feed].get("FEED_USERNAME"),
-                        config[feed].get("FEED_PASSWORD"),
-                    )
-
-                self.inreach_feeds.append(feed_conf)
-
-    async def handle_data(self, data: str, feed_conf: dict) -> None:
-        """Handles the response from the inReach API."""
-        for feed in inrcot.split_feed(data):
-            event: str = inrcot.inreach_to_cot(feed, feed_conf)
-            if event:
-                await self.put_queue(event)
-            else:
-                self._logger.debug("Empty COT Event")
-
-    async def get_inreach_feeds(self):
-        """Gets inReach Feed from API."""
+    async def get_inreach_feeds(self) -> None:
+        """Get inReach Feed from API."""
         for feed_conf in self.inreach_feeds:
             feed_auth = feed_conf.get("feed_auth")
+            if not feed_auth:
+                self._logger.warning("No feed_auth specified.")
+                continue
+
+            feed_url = feed_conf.get("feed_url")
+            if not feed_url:
+                self._logger.warning("No feed_url specified.")
+                continue
+
             async with aiohttp.ClientSession() as session:
                 try:
                     response = await session.request(
-                        method="GET", auth=feed_auth, url=feed_conf.get("feed_url")
+                        method="GET", auth=feed_auth, url=feed_url
                     )
                 except Exception as exc:  # NOQA pylint: disable=broad-except
-                    self._logger.error("Exception raised while polling inReach API.")
+                    self._logger.warning("Exception raised while polling inReach API.")
                     self._logger.exception(exc)
-                    return
+                    continue
 
-                if response.status == 200:
-                    await self.handle_data(await response.content.read(), feed_conf)
-                else:
-                    self._logger.error("No valid response from inReach API.")
+                status: int = response.status
+                if status != 200:
+                    self._logger.warning(
+                        "No valid response from inReach API: status=%s", status
+                    )
+                    self._logger.debug(response)
+                    continue
 
-    async def run(self) -> None:
-        """Runs this Worker, Reads from Pollers."""
+                await self.handle_data(await response.content.read(), feed_conf)
+
+    async def run(self, number_of_iterations=-1) -> None:
+        """Run this Worker, Reads from Pollers."""
         self._logger.info("Run: %s", self.__class__)
 
-        poll_interval: str = self.config.get(
-            "POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL
+        poll_interval: int = int(
+            self.config.get("POLL_INTERVAL", inrcot.DEFAULT_POLL_INTERVAL)
         )
 
         while 1:
             await self.get_inreach_feeds()
-            await asyncio.sleep(int(poll_interval))
+            await asyncio.sleep(poll_interval)
