@@ -65,10 +65,9 @@ Requirements
 INRCOT uses the Garmin Explore "MapShare" feature.
 
 1. Login to Garmin Explore: https://explore.garmin.com/
-2. Browse to the "MY INFO" page: https://explore.garmin.com/Inbox
-3. Click "Social".
-4. Under MapShare > Enable MapShare click to enable 'MapShare: On'.
-5. Click "Feeds" and note the "Raw KML Data" URL, we'll use this URL, write it down.
+2. Browse to the "SOCIAL" page: https://explore.garmin.com/Social
+3. Under MapShare > Enable MapShare click to enable 'MapShare: On'.
+4. Click "Feeds" and note the "Raw KML Data" URL, we'll use this URL, write it down.
 
 For more information on inReach KML Feeds see: https://support.garmin.com/en-US/?faq=tdlDCyo1fJ5UxjUbA9rMY8
 
